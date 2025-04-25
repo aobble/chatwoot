@@ -12,7 +12,7 @@ services:
     depends_on:
       postgres:
         condition: service_started
-      redis:
+      chatwoot-redis:
         condition: service_started
     expose:
       - 3000
@@ -31,7 +31,7 @@ services:
     depends_on:
       postgres:
         condition: service_started
-      redis:
+      chatwoot-redis:
         condition: service_started
     environment:
       - NODE_ENV=production
@@ -57,15 +57,11 @@ services:
     networks:
       - dokploy-network
 
-  redis:
+  chatwoot-redis:
     image: redis:alpine
     restart: always
-    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
-    env_file: .env
     volumes:
       - /data/redis:/data
-    expose:
-      - 6379
     networks:
       - dokploy-network
 
